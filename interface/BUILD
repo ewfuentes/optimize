@@ -1,9 +1,12 @@
+
+
 cc_library(
   name = "function",
   hdrs = ["function.hh"],
   deps = [
        "@eigen//:eigen",
   ],
+  visibility = ["//visibility:public"],
 )
 
 cc_test(
@@ -13,4 +16,13 @@ cc_test(
     ":function",
     "@gtest//:gtest_main",
   ]
+)
+
+cc_library(
+  name = "optimizer",
+  srcs = ["optimizer.hh"],
+  deps = [
+    ":function",
+  ],
+  visibility = ["//visibility:public"],
 )
