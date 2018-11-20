@@ -8,8 +8,8 @@ namespace optimize {
 namespace {
 struct TestFunction : public Optimizable {
   double evaluate(const Eigen::VectorXd &x) const {
-    return (2 * x.transpose() * x + 3 * x +
-            5.0 * Eigen::VectorXd::Ones(x.rows()))(0);
+    return (2 * x.transpose() * x + 3 * Eigen::RowVectorXd::Ones(x.rows()) * x +
+            5.0 * Eigen::VectorXd::Ones(1))(0);
   }
 
   Eigen::VectorXd gradient(const Eigen::VectorXd &x) const {
