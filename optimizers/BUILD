@@ -2,7 +2,25 @@ cc_library(
   name = "optimizer",
   hdrs = ["optimizer.hh"],
   deps = [ "@eigen//:eigen"]
-  )
+)
+
+cc_library(
+  name = "armijo_line_search",
+  hdrs = ["armijo_line_search.hh"],
+  srcs = ["armijo_line_search.cc"],
+  deps = [
+    ":optimizer",
+  ]
+)
+
+cc_test(
+  name = "armijo_line_search_test",
+  srcs = ["armijo_line_search_test.cc"],
+  deps = [
+    ":armijo_line_search",
+    "@gtest//:gtest_main",
+  ]
+)
 
 cc_library(
   name = "simple_gradient_descent",
