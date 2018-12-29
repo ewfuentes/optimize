@@ -23,7 +23,6 @@ namespace optimize {
       int max_iters = 1000;
 
       IterationCallback callback = [](const int, const Result &) {};
-      ;
     };
 
     struct Result {

@@ -9,8 +9,8 @@ struct Optimizable {
   virtual Eigen::VectorXd gradient(const Eigen::VectorXd &x) const { return x; };
   virtual Eigen::MatrixXd hessian(const Eigen::VectorXd &x) const { return x; };
 
-  virtual bool has_gradient() { return false; }
-  virtual bool has_hessian() { return false; }
+  virtual bool has_gradient() const { return false; }
+  virtual bool has_hessian() const { return false; }
 };
 
 } // namespace optimize

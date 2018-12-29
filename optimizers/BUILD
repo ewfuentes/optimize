@@ -59,3 +59,32 @@ cc_test(
    "@gtest//:gtest_main",
    ]
  )
+
+cc_library(
+  name = "constraint",
+  hdrs = ["constraint.hh"],
+  deps = [
+  ":optimizer",
+  ]
+)
+
+cc_library(
+  name = "constrained_newtons_method",
+  hdrs = ["constrained_newtons_method.hh"],
+  srcs = ["constrained_newtons_method.cc"],
+  deps = [
+    ":optimizer",
+    ":constraint",
+    ":simple_newtons_method",
+  ]
+)
+
+cc_test(
+  name = "constrained_newtons_method_test",
+  srcs = ["constrained_newtons_method_test.cc"],
+  deps = [
+   ":constrained_newtons_method",
+   ":optimizer",
+   "@gtest//:gtest_main",
+   ]
+ )
