@@ -22,13 +22,14 @@ struct TestFunction : public Optimizable {
 };
 
 // implements (x_1 + x_2 = 0)
-struct TestConstraint : public Constraint {
+struct TestEqConstraint : public Constraint {
   double evaluate(const Eigen::VectorXd &x) const override {
-    return x(0) + x(1);
+    return x(0) - x(1);
   }
 
   Eigen::VectorXd gradient(const Eigen::VectorXd &x) const override {
     Eigen::Vector2d out = Eigen::Vector2d::Ones();
+    out(1) = -1;
     return out;
   }
 
@@ -38,11 +39,32 @@ struct TestConstraint : public Constraint {
 
   bool has_gradient() const override { return true; }
   bool has_hessian() const override { return true; }
-  bool is_equality_constraint() const override { return true; }
+  bool is_inequality_constraint() const override { return false; }
+};
+
+// implements (x_1 + x_2 < 0)
+struct TestIneqConstraint : public Constraint {
+  double evaluate(const Eigen::VectorXd &x) const override {
+    return x(0) + x(1);
+  }
+
+  Eigen::VectorXd gradient(const Eigen::VectorXd &x) const override {
+    Eigen::Vector2d out = Eigen::Vector2d::Ones();
+    out(1) = -1;
+    return out;
+  }
+
+  Eigen::MatrixXd hessian(const Eigen::VectorXd &x) const override {
+    return Eigen::MatrixXd::Zero(2, 2);
+  }
+
+  bool has_gradient() const override { return true; }
+  bool has_hessian() const override { return true; }
+  bool is_inequality_constraint() const override { return true; }
 };
 } // namespace
 
-TEST(ConstrainedNewtonsMethodTest, Quadratic2DEqualityOnGlobalMinimum) {
+TEST(ConstrainedNewtonsMethodTest, Quadratic2DEqualityOnConstrainedMinimum) {
   const TestFunction f;
   ConstrainedNewtonsMethod optimizer;
   const Eigen::VectorXd test_point = Eigen::VectorXd::Ones(2) * 10.0;
@@ -56,7 +78,7 @@ TEST(ConstrainedNewtonsMethodTest, Quadratic2DEqualityOnGlobalMinimum) {
         std::cout << iter << " cost: " << step.cost
                   << " x: " << step.optimum.transpose() << std::endl;
       }};
-  const TestConstraint c;
+  const TestEqConstraint c;
   std::vector<const Constraint *> constraints;
   constraints.push_back(&c);
   const auto result = optimizer.optimize(f, test_point, constraints, opts);

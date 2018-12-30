@@ -6,7 +6,7 @@
 
 namespace optimize {
 struct Constraint : public Optimizable {
-  virtual bool is_equality_constraint() const { return true; };
+  virtual bool is_inequality_constraint() const { return false; };
 };
 
 struct ConstraintSet {
