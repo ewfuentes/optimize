@@ -117,8 +117,8 @@ CNM::Result CNM::optimize(const Optimizable &f, const Eigen::VectorXd &x_init,
     const auto result = solver.optimize(new_cost, current_x, snm_opts);
     current_x = result.optimum;
     std::cout << "iter: " << i << " current_x: " << current_x.transpose()
-              << " curr penalty: " << penalty << " current lambda: " << lambda
-              << std::endl;
+              << " curr penalty: " << penalty
+              << " current lambda: " << lambda.transpose() << std::endl;
     lambda = update_multipliers(constraints, result.optimum, penalty, lambda);
     penalty *= PENALTY_MULT;
   }
